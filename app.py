@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-from scipy.optimize import fsolve
+from scipy.optimize import root_scalar
 
 # --- PAGE CONFIGURATION ---
 st.set_page_config(page_title="Magic Solution Pro", page_icon="🧪", layout="wide")
@@ -47,35 +47,35 @@ with col3:
     nacrp_conc = st.number_input("[Na-CrP]", value=15.0, step=1.0)
 
 # --- SCIPY RESOLUTION ENGINE ---
+
 pk_25, dpk_dt, molar_mass = BUFFERS[buffer_name]
 pk_t = pk_25 + (temp - 25) * dpk_dt
 
-def charge_balance_equation(vars_array):
+def charge_balance_equation(base_added):
     """
-    Equation system for SciPy.
-    Objective: Find the concentration of strong base (KOH) or strong acid (HCl)
-    to add so that the net charge of the system equals zero.
+    Objectif : Trouver la concentration de titrant (en mM) pour équilibrer les charges.
     """
-    base_added = vars_array[0] # Target variable sought by the solver
-    
-    # Constants
-    h_plus = 10 ** (-target_ph)
-    oh_minus = (10 ** -14) / h_plus
+    # Constantes en Molar (M) pour les calculs d'équilibre
+    h_plus_M = 10 ** (-target_ph)
+    oh_minus_M = (10 ** -14) / h_plus_M
     ka = 10 ** (-pk_t)
     
-    # Buffer speciation (how much A- is generated at this pH?)
-    a_minus = buffer_conc * (ka / (ka + h_plus))
+    # Conversion en mM pour la somme finale
+    h_plus_mM = h_plus_M * 1000
+    oh_minus_mM = oh_minus_M * 1000
     
-    # Balance: [Cations] = [Anions]
-    # base_added (K+ if positive) + H+ = A- + OH- + acid_added (Cl- if base_added is negative)
-    net_charge = base_added + h_plus - a_minus - oh_minus
+    # Spéciation du tampon (Sortie en mM)
+    a_minus = buffer_conc * (ka / (ka + h_plus_M))
+    
+    # Balance des charges (Cations - Anions = 0)
+    net_charge = base_added + h_plus_mM - a_minus - oh_minus_mM
     
     return net_charge
 
 # Launching the fsolve optimizer
 # Providing an initial guess of 50 mM
-solution = fsolve(charge_balance_equation, x0=[50.0])
-added_reagent_mm = solution[0]
+solution = root_scalar(charge_balance_equation, bracket=[-1000, 1000], method='brentq')
+added_reagent_mm = solution.root
 
 # --- POST-RESOLUTION CALCULATIONS ---
 fraction_basique = (10 ** (target_ph - pk_t)) / (1 + 10 ** (target_ph - pk_t))
