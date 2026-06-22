@@ -104,12 +104,11 @@ with res_col2:
     
     # Powder mass calculation
     mass_mg = (buffer_conc / 1000) * molar_mass * vol_ml
-    st.markdown(f"**1.** Weigh **{mass_g:.2f} g** of {buffer_name} powder (free form).")
+    st.markdown(f"**1.** Weigh **{mass_mg:.2f} g** of {buffer_name} powder (free form).")
     
     # Titrant determination (Acid or Base)
     if added_reagent_mm > 0:
         vol_1m_ul = added_reagent_mm * vol_ml
-        added_reagent_mm * vol_mliters
         st.markdown(f"**2.** Add **{vol_1m_ul:.1f} uL** of **1M KOH** (or 1M NaOH) solution.")
     else:
         vol_1m_ul = abs(added_reagent_mm) * vol_ml
