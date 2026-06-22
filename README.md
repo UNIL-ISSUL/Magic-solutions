@@ -1,5 +1,11 @@
 # Magic Solution Pro
 
+Français
+
+Ce dépôt contient "Magic Solution Pro", une application Streamlit permettant de calculer la préparation de tampons et l'ajustement du pH à l'aide du solveur non-linéaire de SciPy.
+
+English
+
 A Streamlit app for calculating buffer preparation and pH adjustment using SciPy's nonlinear solver.
 
 ## Overview
@@ -44,9 +50,13 @@ pip install -r requirements.txt
 
 ## Running the App
 
-Start the Streamlit application with:
+Start the Streamlit application with one of the following commands:
 
 ```bash
+# Option A: use the provided run script (recommended)
+./run
+
+# Option B: run Streamlit directly
 streamlit run app.py
 ```
 
