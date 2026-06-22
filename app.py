@@ -34,7 +34,7 @@ with col1:
     st.subheader("Target Parameters")
     temp = st.number_input("Temperature (°C)", value=10.0, step=1.0)
     target_ph = st.number_input("Target pH", value=7.10, step=0.01)
-    vol_liters = st.number_input("Final Volume (Liters)", value=1.0, step=0.1)
+    vol_ml = st.number_input("Final Volume (mL)", value=1.0, step=0.1)
 
 with col2:
     st.subheader("Composition (mM)")
@@ -100,18 +100,19 @@ with res_col1:
 
 with res_col2:
     st.subheader("🧪 Lab Recipe (Calculated by SciPy)")
-    st.info(f"To prepare **{vol_liters} Liter(s)** of solution at pH {target_ph}:")
+    st.info(f"To prepare **{vol_ml} mL** of solution at pH {target_ph}:")
     
     # Powder mass calculation
-    mass_g = (buffer_conc / 1000) * molar_mass * vol_liters
+    mass_mg = (buffer_conc / 1000) * molar_mass * vol_ml
     st.markdown(f"**1.** Weigh **{mass_g:.2f} g** of {buffer_name} powder (free form).")
     
     # Titrant determination (Acid or Base)
     if added_reagent_mm > 0:
-        vol_1m_ml = (added_reagent_mm / 1000) * vol_liters * 1000
-        st.markdown(f"**2.** Add **{vol_1m_ml:.1f} mL** of **1M KOH** (or 1M NaOH) solution.")
+        vol_1m_ul = 
+        added_reagent_mm * vol_mliters
+        st.markdown(f"**2.** Add **{vol_1m_ul:.1f} uL** of **1M KOH** (or 1M NaOH) solution.")
     else:
-        vol_1m_ml = (abs(added_reagent_mm) / 1000) * vol_liters * 1000
-        st.markdown(f"**2.** Add **{vol_1m_ml:.1f} mL** of **1M HCl** solution.")
+        vol_1m_ul = abs(added_reagent_mm) * vol_ml
+        st.markdown(f"**2.** Add **{vol_1m_ul:.1f} uL** of **1M HCl** solution.")
         
     st.markdown("**3.** Fill with ultra-pure water (Milli-Q) to the calibration mark.")
