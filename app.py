@@ -108,7 +108,7 @@ with res_col2:
     
     # Titrant determination (Acid or Base)
     if added_reagent_mm > 0:
-        vol_1m_ul = 
+        vol_1m_ul = added_reagent_mm * vol_ml
         added_reagent_mm * vol_mliters
         st.markdown(f"**2.** Add **{vol_1m_ul:.1f} uL** of **1M KOH** (or 1M NaOH) solution.")
     else:
