@@ -1,2 +1,2 @@
 # Magic-solutions
-Compoute pKa of buffer solutions
+Compute pKa of buffer solutions
